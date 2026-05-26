@@ -11,7 +11,7 @@ import (
 	"sync"
 	"unsafe"
 
-	badgerffi "github.com/rustonbsd/corekv
+	badgerffi "github.com/rustonbsd/corekv/badger_ffi/ffi"
 )
 
 type handleTable[T any] struct {
