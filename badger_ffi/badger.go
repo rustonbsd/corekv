@@ -1,44 +1,29 @@
-package badger
+package badger_ffi
 
 import (
 	"context"
 	"errors"
-	"strings"
-	"sync"
-
-	"github.com/dgraph-io/badger/v4"
 
 	"github.com/sourcenetwork/corekv"
 )
 
 type Datastore struct {
-	db *badger.DB
-
-	// Badger panics when creating a new iterator if the store has closed, instead of returning an error
-	// like it does everywhere else. We would much rather error than panic, so we track that state here.
-	closed  bool
-	closeLk sync.RWMutex
+	handle uint64
+	closed bool
 }
+
+var errWritesBlocked = errors.New("Writes are blocked, possibly due to DropAll or Close")
 
 var _ corekv.TxnStore = (*Datastore)(nil)
 var _ corekv.Dropable = (*Datastore)(nil)
 
-func NewDatastore(path string, opts badger.Options) (*Datastore, error) {
-	opts.Dir = path
-	opts.ValueDir = path
-	opts.Logger = nil
-	store, err := badger.Open(opts)
+func NewDatastore(path string, opts Options) (*Datastore, error) {
+	handle, err := ffiOpen(path, compatOptions(opts))
 	if err != nil {
 		return nil, err
 	}
 
-	return NewDatastoreFrom(store), nil
-}
-
-func NewDatastoreFrom(db *badger.DB) *Datastore {
-	return &Datastore{
-		db: db,
-	}
+	return &Datastore{handle: handle}, nil
 }
 
 func (b *Datastore) Get(ctx context.Context, key []byte) ([]byte, error) {
@@ -100,11 +85,15 @@ func (b *Datastore) Delete(ctx context.Context, key []byte) error {
 }
 
 func (b *Datastore) Close() error {
-	b.closeLk.Lock()
-	defer b.closeLk.Unlock()
-	b.closed = true
+	if b.closed {
+		return nil
+	}
 
-	return b.db.Close()
+	err := ffiDBClose(b.handle)
+	if err == nil {
+		b.closed = true
+	}
+	return err
 }
 
 func (b *Datastore) Iterator(ctx context.Context, iterOpts corekv.IterOptions) (corekv.Iterator, error) {
@@ -131,7 +120,7 @@ func (b *Datastore) Iterator(ctx context.Context, iterOpts corekv.IterOptions) (
 }
 
 func (d *Datastore) DropAll() error {
-	return d.db.DropAll()
+	return ffiDBDropAll(d.handle)
 }
 
 func (b *Datastore) NewTxn(readonly bool) corekv.Txn {
@@ -139,36 +128,39 @@ func (b *Datastore) NewTxn(readonly bool) corekv.Txn {
 }
 
 func (b *Datastore) newTxn(readonly bool) *bTxn {
+	if b.closed {
+		return &bTxn{
+			d:       b,
+			initErr: closedTxnErr(readonly),
+		}
+	}
+
+	handle, err := ffiDBNewTxn(b.handle, readonly)
 	return &bTxn{
-		t: b.db.NewTransaction(!readonly),
-		d: b,
+		handle:  handle,
+		d:       b,
+		initErr: err,
 	}
 }
 
 type bTxn struct {
-	t *badger.Txn
-	d *Datastore
+	handle  uint64
+	d       *Datastore
+	initErr error
 }
 
 func (txn *bTxn) Get(ctx context.Context, key []byte) ([]byte, error) {
-	item, err := txn.t.Get(key)
-	if err != nil {
-		return nil, badgerErrToKVErr(err)
+	if txn.initErr != nil {
+		return nil, txn.initErr
 	}
-
-	return item.ValueCopy(nil)
+	return ffiTxnGet(txn.handle, key)
 }
 
 func (txn *bTxn) Has(ctx context.Context, key []byte) (bool, error) {
-	_, err := txn.t.Get(key)
-	switch {
-	case errors.Is(err, badger.ErrKeyNotFound):
-		return false, nil
-	case err == nil:
-		return true, nil
-	default:
-		return false, badgerErrToKVErr(err)
+	if txn.initErr != nil {
+		return false, txn.initErr
 	}
+	return ffiTxnHas(txn.handle, key)
 }
 
 func (txn *bTxn) Iterator(ctx context.Context, iterOpts corekv.IterOptions) (corekv.Iterator, error) {
@@ -176,67 +168,47 @@ func (txn *bTxn) Iterator(ctx context.Context, iterOpts corekv.IterOptions) (cor
 }
 
 func (txn *bTxn) iterator(iopts corekv.IterOptions) (iteratorCloser, error) {
-	txn.d.closeLk.RLock()
-	defer txn.d.closeLk.RUnlock()
-	if txn.d.closed {
-		return nil, corekv.ErrDBClosed
+	if txn.initErr != nil {
+		return nil, txn.initErr
+	}
+	handle, err := ffiTxnIterator(txn.handle, iopts)
+	if err != nil {
+		return nil, err
 	}
 
-	if iopts.Prefix != nil {
-		return newPrefixIterator(txn, iopts.Prefix, iopts.Reverse, iopts.KeysOnly), nil
-	}
-	return newRangeIterator(txn, iopts.Start, iopts.End, iopts.Reverse, iopts.KeysOnly), nil
+	return &iterator{txn: txn, handle: handle}, nil
 }
 
 func (txn *bTxn) Set(ctx context.Context, key []byte, value []byte) error {
-	err := txn.t.Set(key, value)
-	return badgerErrToKVErr(err)
+	if txn.initErr != nil {
+		return txn.initErr
+	}
+	return ffiTxnSet(txn.handle, key, value)
 }
 
 func (txn *bTxn) Delete(ctx context.Context, key []byte) error {
-	err := txn.t.Delete(key)
-	return badgerErrToKVErr(err)
+	if txn.initErr != nil {
+		return txn.initErr
+	}
+	return ffiTxnDelete(txn.handle, key)
 }
 
 func (txn *bTxn) Commit() error {
-	err := txn.t.Commit()
-	return badgerErrToKVErr(err)
+	if txn.initErr != nil {
+		return txn.initErr
+	}
+	return ffiTxnCommit(txn.handle)
 }
 
 func (txn *bTxn) Discard() {
-	txn.t.Discard()
+	ffiTxnDiscard(txn.handle)
+	txn.handle = 0
 }
 
-var badgerErrToKVErrMap = map[error]error{
-	badger.ErrEmptyKey:     corekv.ErrEmptyKey,
-	badger.ErrKeyNotFound:  corekv.ErrNotFound,
-	badger.ErrDiscardedTxn: corekv.ErrDiscardedTxn,
-	badger.ErrDBClosed:     corekv.ErrDBClosed,
-	badger.ErrConflict:     corekv.ErrTxnConflict,
-}
-
-func badgerErrToKVErr(err error) error {
-	if err == nil {
-		return nil
+func closedTxnErr(readonly bool) error {
+	if readonly {
+		return corekv.ErrDBClosed
 	}
 
-	mappedErr := badgerErrToKVErrMap[err]
-	if mappedErr == nil {
-		switch {
-		case errors.Is(err, badger.ErrEmptyKey):
-			mappedErr = corekv.ErrEmptyKey
-		case errors.Is(err, badger.ErrKeyNotFound):
-			mappedErr = corekv.ErrNotFound
-		case errors.Is(err, badger.ErrDBClosed):
-			mappedErr = corekv.ErrDBClosed
-		case strings.Contains(err.Error(), badger.ErrDBClosed.Error()):
-			mappedErr = corekv.ErrDBClosed
-		case strings.Contains(err.Error(), badger.ErrConflict.Error()):
-			mappedErr = corekv.ErrTxnConflict
-		default:
-			return err
-		}
-	}
-
-	return mappedErr
+	return errWritesBlocked
 }
