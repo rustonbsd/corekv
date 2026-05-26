@@ -1,9 +1,9 @@
 package action
 
 import (
-	"github.com/sourcenetwork/corekv"
-	"github.com/sourcenetwork/corekv/namespace"
-	"github.com/sourcenetwork/corekv/test/state"
+	"github.com/rustonbsd/corekv"
+	"github.com/rustonbsd/corekv/namespace"
+	"github.com/rustonbsd/corekv/test/state"
 )
 
 // NamespaceStore action will namespace the current store (replacing it) with the

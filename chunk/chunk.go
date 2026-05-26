@@ -6,7 +6,7 @@ import (
 	"errors"
 	"slices"
 
-	"github.com/sourcenetwork/corekv"
+	"github.com/rustonbsd/corekv"
 )
 
 // Chunkstore is a corekv store that wraps other corekv ReaderWriters and
@@ -158,7 +158,7 @@ func (s *Chunkstore) Set(ctx context.Context, key []byte, value []byte) error {
 			// TODO - this is incorrect beyond 256 chunks! It has been commited as-is as we need this store
 			// asap and this limit is unlikely to impact the immediate use-case.
 			//
-			// https://github.com/sourcenetwork/corekv/issues/93
+			// https://github.com/rustonbsd/corekv/issues/93
 			chunkKey = bytesPrefixEnd(chunkKey)
 		}
 	}

@@ -3,7 +3,7 @@ package namespace
 import (
 	"context"
 
-	"github.com/sourcenetwork/corekv"
+	"github.com/rustonbsd/corekv"
 )
 
 // Datastore wraps a namespace of another database as a logical database.

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sourcenetwork/corekv/test/action"
+	"github.com/rustonbsd/corekv/test/action"
 )
 
 var activeMultipliers []Multiplier

@@ -1,7 +1,7 @@
 package namespace
 
 import (
-	"github.com/sourcenetwork/corekv"
+	"github.com/rustonbsd/corekv"
 )
 
 type Txn struct {

@@ -3,8 +3,8 @@ package integration
 import (
 	"testing"
 
-	"github.com/sourcenetwork/corekv/test/action"
-	"github.com/sourcenetwork/corekv/test/multiplier"
+	"github.com/rustonbsd/corekv/test/action"
+	"github.com/rustonbsd/corekv/test/multiplier"
 )
 
 func TestDeleteClose_MemoryStoreDeleteOnClosedStore_Errors(t *testing.T) {

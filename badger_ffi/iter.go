@@ -1,7 +1,7 @@
 package badger_ffi
 
 import (
-	"github.com/sourcenetwork/corekv"
+	"github.com/rustonbsd/corekv
 )
 
 type iteratorCloser interface {

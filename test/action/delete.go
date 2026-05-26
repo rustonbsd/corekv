@@ -1,7 +1,7 @@
 package action
 
 import (
-	"github.com/sourcenetwork/corekv/test/state"
+	"github.com/rustonbsd/corekv/test/state"
 )
 
 // DeleteValue action deletes the entry at the given key when executed.

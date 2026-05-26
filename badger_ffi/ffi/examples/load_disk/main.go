@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/sourcenetwork/corekv/badger_ffi/ffi"
+	"github.com/rustonbsd/corekv/badger_ffi/ffi"
 )
 
 func main() {

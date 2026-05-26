@@ -3,9 +3,9 @@ package iterator
 import (
 	"testing"
 
-	"github.com/sourcenetwork/corekv/test/action"
-	"github.com/sourcenetwork/corekv/test/integration"
-	"github.com/sourcenetwork/corekv/test/multiplier"
+	"github.com/rustonbsd/corekv/test/action"
+	"github.com/rustonbsd/corekv/test/integration"
+	"github.com/rustonbsd/corekv/test/multiplier"
 )
 
 func TestIteratorCloseNextValue_NoTxn(t *testing.T) {
@@ -13,7 +13,7 @@ func TestIteratorCloseNextValue_NoTxn(t *testing.T) {
 		Excludes: []multiplier.Name{
 			// Test behaviour varies a bit with the txn multipliers at the moment,
 			// with the stores all failing in slightly different ways.
-			// https://github.com/sourcenetwork/corekv/issues/68
+			// https://github.com/rustonbsd/corekv/issues/68
 			multiplier.TxnDiscard,
 			multiplier.TxnCommit,
 			multiplier.TxnMulti,

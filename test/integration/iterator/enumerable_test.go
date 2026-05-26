@@ -3,7 +3,7 @@ package iterator
 import (
 	"github.com/sourcenetwork/immutable/enumerable"
 
-	"github.com/sourcenetwork/corekv"
+	"github.com/rustonbsd/corekv"
 )
 
 // Here we assert that [Iterator] does implement the [Enumerable] interface.

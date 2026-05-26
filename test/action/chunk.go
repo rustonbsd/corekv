@@ -1,9 +1,9 @@
 package action
 
 import (
-	"github.com/sourcenetwork/corekv"
-	"github.com/sourcenetwork/corekv/chunk"
-	"github.com/sourcenetwork/corekv/test/state"
+	"github.com/rustonbsd/corekv"
+	"github.com/rustonbsd/corekv/chunk"
+	"github.com/rustonbsd/corekv/test/state"
 	"github.com/stretchr/testify/require"
 )
 

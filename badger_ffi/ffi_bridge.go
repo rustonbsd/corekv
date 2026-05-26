@@ -56,7 +56,7 @@ import (
 	"unsafe"
 
 	badgerds "github.com/dgraph-io/badger/v4"
-	"github.com/sourcenetwork/corekv"
+	"github.com/rustonbsd/corekv"
 )
 
 type ffiOpenOptions struct {

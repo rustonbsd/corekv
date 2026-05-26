@@ -8,7 +8,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/sourcenetwork/corekv"
+	"github.com/rustonbsd/corekv"
 
 	"github.com/tidwall/btree"
 )

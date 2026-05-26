@@ -3,8 +3,8 @@ package iterator
 import (
 	"testing"
 
-	"github.com/sourcenetwork/corekv/test/action"
-	"github.com/sourcenetwork/corekv/test/integration"
+	"github.com/rustonbsd/corekv/test/action"
+	"github.com/rustonbsd/corekv/test/integration"
 )
 
 func TestIteratorResetNextValue_PartialIteration(t *testing.T) {

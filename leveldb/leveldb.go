@@ -16,7 +16,7 @@ import (
 	"github.com/sourcenetwork/goleveldb/leveldb/opt"
 	"github.com/sourcenetwork/goleveldb/leveldb/util"
 
-	"github.com/sourcenetwork/corekv"
+	"github.com/rustonbsd/corekv"
 )
 
 type Datastore struct {

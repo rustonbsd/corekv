@@ -3,9 +3,9 @@ package iterator
 import (
 	"testing"
 
-	"github.com/sourcenetwork/corekv"
-	"github.com/sourcenetwork/corekv/test/action"
-	"github.com/sourcenetwork/corekv/test/integration"
+	"github.com/rustonbsd/corekv"
+	"github.com/rustonbsd/corekv/test/action"
+	"github.com/rustonbsd/corekv/test/integration"
 )
 
 func TestIteratorPrefixReverseNext(t *testing.T) {

@@ -1,6 +1,6 @@
 package multiplier
 
-import "github.com/sourcenetwork/corekv/test/action"
+import "github.com/rustonbsd/corekv/test/action"
 
 func init() {
 	Register(&namespace{})

@@ -1,7 +1,7 @@
 package multiplier
 
 import (
-	"github.com/sourcenetwork/corekv/test/action"
+	"github.com/rustonbsd/corekv/test/action"
 )
 
 func init() {

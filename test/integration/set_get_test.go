@@ -3,7 +3,7 @@ package integration
 import (
 	"testing"
 
-	"github.com/sourcenetwork/corekv/test/action"
+	"github.com/rustonbsd/corekv/test/action"
 )
 
 func TestSetGet(t *testing.T) {

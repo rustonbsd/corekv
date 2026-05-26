@@ -15,7 +15,7 @@ import (
 	"context"
 	"sync/atomic"
 
-	"github.com/sourcenetwork/corekv"
+	"github.com/rustonbsd/corekv"
 	"github.com/tidwall/btree"
 )
 

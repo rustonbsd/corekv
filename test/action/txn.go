@@ -3,8 +3,8 @@ package action
 import (
 	"github.com/stretchr/testify/require"
 
-	"github.com/sourcenetwork/corekv"
-	"github.com/sourcenetwork/corekv/test/state"
+	"github.com/rustonbsd/corekv"
+	"github.com/rustonbsd/corekv/test/state"
 )
 
 // TxnAction wraps an action within the context of a transaction.

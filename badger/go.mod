@@ -1,10 +1,10 @@
-module github.com/sourcenetwork/corekv/badger
+module github.com/rustonbsd/corekv/badger
 
 go 1.24.6
 
 require (
 	github.com/dgraph-io/badger/v4 v4.8.0
-	github.com/sourcenetwork/corekv v0.0.0
+	github.com/rustonbsd/corekv v0.0.0
 )
 
 require (
@@ -24,4 +24,4 @@ require (
 	google.golang.org/protobuf v1.36.6 // indirect
 )
 
-replace github.com/sourcenetwork/corekv v0.0.0 => ./..
+replace github.com/rustonbsd/corekv v0.0.0 => ./..

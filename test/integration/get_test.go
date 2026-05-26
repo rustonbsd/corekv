@@ -3,8 +3,8 @@ package integration
 import (
 	"testing"
 
-	"github.com/sourcenetwork/corekv"
-	"github.com/sourcenetwork/corekv/test/action"
+	"github.com/rustonbsd/corekv"
+	"github.com/rustonbsd/corekv/test/action"
 )
 
 func TestGet_NoneExistantKey_Errors(t *testing.T) {

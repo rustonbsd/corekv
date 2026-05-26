@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/sourcenetwork/corekv"
+	"github.com/rustonbsd/corekv"
 )
 
 type Datastore struct {

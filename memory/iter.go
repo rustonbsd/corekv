@@ -3,7 +3,7 @@ package memory
 import (
 	"bytes"
 
-	"github.com/sourcenetwork/corekv"
+	"github.com/rustonbsd/corekv"
 
 	"github.com/tidwall/btree"
 )

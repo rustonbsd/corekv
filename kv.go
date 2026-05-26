@@ -21,7 +21,7 @@ type IterOptions struct {
 	//
 	// Providing a Prefix value should cause the Start and End options
 	// to be ignored, although this is currently untested:
-	// https://github.com/sourcenetwork/corekv/issues/35
+	// https://github.com/rustonbsd/corekv/issues/35
 	Prefix []byte
 
 	// If Prefix is nil, and Start is provided, the iterator will
@@ -30,7 +30,7 @@ type IterOptions struct {
 	//
 	// Providing an `End` value equal to or smaller than this value
 	// will result in undefined behaviour:
-	// https://github.com/sourcenetwork/corekv/issues/32
+	// https://github.com/rustonbsd/corekv/issues/32
 	Start []byte
 
 	// If Prefix is nil, and End is provided, the iterator will
@@ -39,7 +39,7 @@ type IterOptions struct {
 	//
 	// Providing an End value equal to or smaller than Start
 	// will result in undefined behaviour:
-	// https://github.com/sourcenetwork/corekv/issues/32
+	// https://github.com/rustonbsd/corekv/issues/32
 	End []byte
 
 	// Reverse the direction of the iteration, returning items in
@@ -50,10 +50,10 @@ type IterOptions struct {
 	// iterator will return nil and no error.
 	//
 	// This option is currently untested:
-	// https://github.com/sourcenetwork/corekv/issues/34
+	// https://github.com/rustonbsd/corekv/issues/34
 	//
 	// It is very likely ignored for the memory store iteration:
-	// https://github.com/sourcenetwork/corekv/issues/33
+	// https://github.com/rustonbsd/corekv/issues/33
 	KeysOnly bool
 }
 
@@ -83,7 +83,7 @@ type Writer interface {
 	// Delete removes the value at the given key.
 	//
 	// If no matching key is found the behaviour is undefined:
-	// https://github.com/sourcenetwork/corekv/issues/36
+	// https://github.com/rustonbsd/corekv/issues/36
 	Delete(ctx context.Context, key []byte) error
 }
 
@@ -106,13 +106,13 @@ type Iterator interface {
 	// Key returns the key at the current iterator location.
 	//
 	// If the iterator is currently at an invalid location it's behaviour is undefined:
-	// https://github.com/sourcenetwork/corekv/issues/37
+	// https://github.com/rustonbsd/corekv/issues/37
 	Key() []byte
 
 	// Value returns the value at the current iterator location.
 	//
 	// If the iterator is currently at an invalid location it's behaviour is undefined:
-	// https://github.com/sourcenetwork/corekv/issues/37
+	// https://github.com/rustonbsd/corekv/issues/37
 	Value() ([]byte, error)
 
 	// Seek moves the iterator to the given key, if an exact match is not found, the
@@ -148,6 +148,6 @@ type Store interface {
 	// Close disposes of any resources directly held by the store.
 	//
 	// WARNING: Some implmentations close transactions and iterators, others do not:
-	// https://github.com/sourcenetwork/corekv/issues/39
+	// https://github.com/rustonbsd/corekv/issues/39
 	Close() error
 }

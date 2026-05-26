@@ -22,7 +22,7 @@ import (
 	dsq "github.com/ipfs/go-datastore/query"
 	ipld "github.com/ipfs/go-ipld-format"
 
-	"github.com/sourcenetwork/corekv"
+	"github.com/rustonbsd/corekv"
 	"github.com/sourcenetwork/corelog"
 )
 

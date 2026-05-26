@@ -3,7 +3,7 @@ package leveldb
 import (
 	"bytes"
 
-	"github.com/sourcenetwork/corekv"
+	"github.com/rustonbsd/corekv"
 	iter "github.com/sourcenetwork/goleveldb/leveldb/iterator"
 )
 

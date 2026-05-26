@@ -1,7 +1,7 @@
 package action
 
 import (
-	"github.com/sourcenetwork/corekv/test/state"
+	"github.com/rustonbsd/corekv/test/state"
 	"github.com/stretchr/testify/require"
 )
 

@@ -1,6 +1,6 @@
 package action
 
-import "github.com/sourcenetwork/corekv/test/state"
+import "github.com/rustonbsd/corekv/test/state"
 
 // Action represents an item to be executed as part of a test.
 //

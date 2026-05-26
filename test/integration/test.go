@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/sourcenetwork/corekv/test/action"
-	"github.com/sourcenetwork/corekv/test/multiplier"
-	"github.com/sourcenetwork/corekv/test/state"
+	"github.com/rustonbsd/corekv/test/action"
+	"github.com/rustonbsd/corekv/test/multiplier"
+	"github.com/rustonbsd/corekv/test/state"
 )
 
 func init() {

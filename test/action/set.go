@@ -1,7 +1,7 @@
 package action
 
 import (
-	"github.com/sourcenetwork/corekv/test/state"
+	"github.com/rustonbsd/corekv/test/state"
 )
 
 // SetValue action will set the given key to the given value when executed.

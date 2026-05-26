@@ -1,7 +1,7 @@
 package action
 
 import (
-	"github.com/sourcenetwork/corekv/test/state"
+	"github.com/rustonbsd/corekv/test/state"
 )
 
 // CloseStore action will close the current Rootstore.
